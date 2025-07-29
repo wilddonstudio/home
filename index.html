@@ -1,2 +1,107 @@
-<script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.22/build/spline-viewer.js"></script>
-<spline-viewer url="https://prod.spline.design/yNoP7nwZEgn9nBUW/scene.splinecode"></spline-viewer>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wild Don Studio</title>
+  <style>
+    /* CSS from your first question */
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      border: 1px solid black;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+
+    p {
+      font:-ALPHA- 1em sans-serif;
+      margin: 0;
+      padding: 0.5em;
+    }
+
+    ul {
+      list-style: none;
+      font: 1em monospace;
+      margin: 0;
+      padding: 0.5em;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      background: black;
+    }
+
+    li {
+      display: inline-block;
+      margin: 0;
+      padding: 0.5em;
+      background: white;
+    }
+
+    /* Canvas styling */
+    #canvas3d {
+      width: 100%;
+      height: 100%;
+      display: block; /* Ensures canvas behaves as a block element */
+    }
+
+    /* Rotate canvas in landscape on mobile */
+    @media (max-width: 768px) and (orientation: landscape) {
+      #canvas3d {
+        /*transform: rotate(90deg);
+        transform-origin: center;
+        */
+        width: 100vh; /* Swap width/height for landscape */
+        height: 100vw;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas3d"></canvas>
+  <script type="module">
+    // Import Spline runtime from CDN
+    import { Application } from 'https://unpkg.com/@splinetool/runtime';
+
+    // Select the canvas element
+    const canvas = document.getElementById('canvas3d');
+
+    // Initialize Spline Application
+    const app = new Application(canvas);
+
+    // Load your Spline scene (replace with your scene URL)
+    app.load('https://prod.spline.design/arKumomJtipRgMnJ/scene.splinecode')
+      .then(() => {
+        console.log('Spline scene loaded successfully');
+      })
+      .catch((error) => {
+        console.error('Error loading Spline scene:', error);
+      });
+
+    // Function to handle orientation changes
+    function handleOrientationChange() {
+      const isMobile = window.matchMedia("(max-width: 768px)").matches;
+      const isLandscape = window.matchMedia("(orientation: landscape)").matches;
+
+      if (isMobile && isLandscape) {
+        console.log('Mobile device in landscape mode - canvas rotated via CSS');
+        // CSS handles rotation, but you can add JS-based adjustments here if needed
+      } else {
+        console.log('Portrait mode or non-mobile - no rotation needed');
+      }
+    }
+
+    // Listen for orientation changes and initial check
+    window.addEventListener('orientationchange', handleOrientationChange);
+    window.addEventListener('resize', handleOrientationChange);
+    handleOrientationChange(); // Check on$page load
+  </script>
+</body>
+</html>
